@@ -25,7 +25,7 @@ class Firefox:
 @pytest.fixture(scope='class')
 def driver_init(request):
     driver = Chrome()
-    driver = driver.load_driver(headless=True)
+    driver = driver.load_driver(headless=False)
     request.cls.driver = driver
     yield
     driver.close()
@@ -34,13 +34,27 @@ def driver_init(request):
 @pytest.mark.usefixtures('driver_init')
 class TestLogin:
     def test_page(self):
-        self.driver.get('https://lowcygier.pl/')
-        assert 'https://lowcygier.pl/' in self.driver.current_url
+        self.driver.get('http://localhost:3000/login')
+        assert 'http://localhost:3000/login' in self.driver.current_url
 
-    def test_valid_login(self):
-        self.driver.get('https://www.google.pl/')
+    def test_move_to_register(self):
+        self.driver.get('http://localhost:3000/login')
 
-        elem = self.driver.find_element_by_name('q')
-        elem.send_keys('pomocy')
-        elem.submit()
-        assert 1 == 1
+        self.driver.find_element_by_xpath(r'//*[@title="Stwórz konto"]').click()
+        assert 'http://localhost:3000/register' in self.driver.current_url
+
+    def test_register(self):
+        self.driver.get('http://localhost:3000/register')
+
+        name = self.driver.find_element_by_xpath(r'//input[@placeholder="imię"')
+        email = self.driver.find_element_by_xpath(r'//input[@placeholder="adres@mail.com"')
+        password = self.driver.find_element_by_xpath(r'//input[@placeholder="przynajmniej 8 znaków"')
+        name.send_key('test')
+        email.send_key('test@test.pl')
+        password.send_key('test')
+
+
+
+
+
+
