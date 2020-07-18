@@ -46,15 +46,9 @@ class TestLogin:
     def test_register(self):
         self.driver.get('http://localhost:3000/register')
 
-        name = self.driver.find_element_by_xpath(r'//input[@placeholder="imię"')
-        email = self.driver.find_element_by_xpath(r'//input[@placeholder="adres@mail.com"')
-        password = self.driver.find_element_by_xpath(r'//input[@placeholder="przynajmniej 8 znaków"')
-        name.send_key('test')
-        email.send_key('test@test.pl')
-        password.send_key('test')
-
-
-
-
-
-
+        name = self.driver.find_element_by_xpath(r'//input[@placeholder="imię"]')
+        email = self.driver.find_element_by_xpath(r'//input[@placeholder="adres@mail.com"]')
+        password = self.driver.find_element_by_xpath(r'//input[@placeholder="przynajmniej 8 znaków"]')
+        name.send_keys('test')
+        email.send_keys('test@test.pl')
+        password.send_keys('test')
