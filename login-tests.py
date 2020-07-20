@@ -1,4 +1,5 @@
 import pytest
+import requests
 from selenium import webdriver
 
 
@@ -25,7 +26,7 @@ class Firefox:
 @pytest.fixture(scope='class')
 def driver_init(request):
     driver = Chrome()
-    driver = driver.load_driver(headless=False)
+    driver = driver.load_driver(headless=True)
     request.cls.driver = driver
     yield
     driver.close()
@@ -34,8 +35,7 @@ def driver_init(request):
 @pytest.mark.usefixtures('driver_init')
 class TestLogin:
     def test_page(self):
-        self.driver.get('http://localhost:3000/login')
-        assert 'http://localhost:3000/login' in self.driver.current_url
+        assert requests.get('http://localhost:3000/login').status_code == 200
 
     def test_move_to_register(self):
         self.driver.get('http://localhost:3000/login')
