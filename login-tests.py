@@ -7,7 +7,8 @@ from selenium import webdriver
 
 
 class Chrome:
-    def load_driver(self, headless=False):
+    @staticmethod
+    def load_driver(headless=False):
         chrome_options = webdriver.ChromeOptions()
         if headless:
             chrome_options.add_argument('--headless')
@@ -17,7 +18,8 @@ class Chrome:
 
 
 class Firefox:
-    def load_driver(self, headless=False):
+    @staticmethod
+    def load_driver(headless=False):
         firefox_options = webdriver.FirefoxOptions()
         if headless:
             firefox_options.add_argument('--headless')
@@ -29,7 +31,7 @@ class Firefox:
 @pytest.fixture(scope='class')
 def driver_init(request):
     driver = Chrome()
-    driver = driver.load_driver(headless=False)
+    driver = driver.load_driver(headless=True)
     request.cls.driver = driver
     yield
     driver.close()
@@ -60,6 +62,18 @@ class TestLogin:
 
         self.driver.find_element_by_xpath(r'//*[@title="Zaloguj się teraz"]').click()
         assert 'http://localhost:3000/login/form' in self.driver.current_url
+
+    def test_move_arrow_register(self):
+        self.driver.get('http://localhost:3000/register')
+        link = self.driver.find_element_by_partial_link_text('/login')
+        link.click()
+        assert 'http://localhost:3000/login' in self.driver.current_url
+
+    def test_move_arrow_login(self):
+        self.driver.get('http://localhost:3000/login/form')
+        link = self.driver.find_element_by_partial_link_text('/login')
+        link.click()
+        assert 'http://localhost:3000/login' in self.driver.current_url
 
     def test_register(self):
         self.driver.get('http://localhost:3000/register')
@@ -105,4 +119,3 @@ class TestLogin:
         time.sleep(2)
 
         assert 'http://localhost:3000/login' in self.driver.current_url
-
