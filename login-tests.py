@@ -31,7 +31,7 @@ class Firefox:
 @pytest.fixture(scope='class')
 def driver_init(request):
     driver = Chrome()
-    driver = driver.load_driver(headless=True)
+    driver = driver.load_driver(headless=False)
     request.cls.driver = driver
     yield
     driver.close()
@@ -46,37 +46,39 @@ def valid_logins():
 
 @pytest.mark.usefixtures('driver_init')
 class TestLogin:
+    page_url = 'https://admiring-wescoff-0a164f.netlify.app'
+
     def test_pages(self):
-        assert requests.get('http://localhost:3000/login').status_code == 200
-        assert requests.get('http://localhost:3000/login/form').status_code == 200
-        assert requests.get('http://localhost:3000/register').status_code == 200
+        assert requests.get(f'{self.page_url}/login').status_code == 200
+        assert requests.get(f'{self.page_url}/login/form').status_code == 200
+        assert requests.get(f'{self.page_url}/register').status_code == 200
 
     def test_move_to_register(self):
-        self.driver.get('http://localhost:3000/login')
+        self.driver.get(f'{self.page_url}/login')
 
         self.driver.find_element_by_xpath(r'//*[@title="Stwórz konto"]').click()
-        assert 'http://localhost:3000/register' in self.driver.current_url
+        assert f'{self.page_url}/register' in self.driver.current_url
 
     def test_move_to_login(self):
-        self.driver.get('http://localhost:3000/login')
+        self.driver.get(f'{self.page_url}/login')
 
         self.driver.find_element_by_xpath(r'//*[@title="Zaloguj się teraz"]').click()
-        assert 'http://localhost:3000/login/form' in self.driver.current_url
+        assert f'{self.page_url}/login/form' in self.driver.current_url
 
     def test_move_arrow_register(self):
-        self.driver.get('http://localhost:3000/register')
+        self.driver.get(f'{self.page_url}/register')
         link = self.driver.find_element_by_partial_link_text('/login')
         link.click()
-        assert 'http://localhost:3000/login' in self.driver.current_url
+        assert f'{self.page_url}/login' in self.driver.current_url
 
     def test_move_arrow_login(self):
-        self.driver.get('http://localhost:3000/login/form')
+        self.driver.get(f'{self.page_url}/login/form')
         link = self.driver.find_element_by_partial_link_text('/login')
         link.click()
-        assert 'http://localhost:3000/login' in self.driver.current_url
+        assert f'{self.page_url}/login' in self.driver.current_url
 
     def test_register(self):
-        self.driver.get('http://localhost:3000/register')
+        self.driver.get(f'{self.page_url}/register')
 
         name = self.driver.find_element_by_xpath(r'//input[@placeholder="Nazwa użytkownika"]')
         email = self.driver.find_element_by_xpath(r'//input[@placeholder="adres@mail.com"]')
@@ -90,10 +92,10 @@ class TestLogin:
         register_button.click()
         time.sleep(2)
 
-        assert 'http://localhost:3000/login' in self.driver.current_url
+        assert f'{self.page_url}/login' in self.driver.current_url
 
     def test_login_username(self):
-        self.driver.get('http://localhost:3000/login/form')
+        self.driver.get(f'{self.page_url}/login/form')
 
         name = self.driver.find_element_by_xpath(r'//input[@placeholder="email/username"]')
         password = self.driver.find_element_by_xpath(r'//input[@placeholder="hasło"]')
@@ -104,10 +106,10 @@ class TestLogin:
         login_button.click()
         time.sleep(2)
 
-        assert 'http://localhost:3000/login' in self.driver.current_url
+        assert f'{self.page_url}/login' in self.driver.current_url
 
     def test_login_email(self):
-        self.driver.get('http://localhost:3000/login/form')
+        self.driver.get(f'{self.page_url}/login/form')
 
         name = self.driver.find_element_by_xpath(r'//input[@placeholder="email/username"]')
         password = self.driver.find_element_by_xpath(r'//input[@placeholder="hasło"]')
@@ -118,4 +120,4 @@ class TestLogin:
         login_button.click()
         time.sleep(2)
 
-        assert 'http://localhost:3000/login' in self.driver.current_url
+        assert f'{self.page_url}/login' in self.driver.current_url
