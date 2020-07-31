@@ -18,21 +18,23 @@ class Chrome:
         return driver
 
 
-class Firefox:
+class DockerChrome:
     @staticmethod
-    def load_driver(headless=False):
-        firefox_options = webdriver.FirefoxOptions()
+    def load_driver(headless=True):
+        chrome_options = webdriver.ChromeOptions()
         if headless:
-            firefox_options.add_argument('--headless')
-        firefox_driver_path = 'drivers/firefox/geckodriver.exe'
-        driver = webdriver.Firefox(options=firefox_options, executable_path=firefox_driver_path)
+            chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-gpu')
+        driver = webdriver.Chrome(options=chrome_options)
+        driver.implicitly_wait(1)
         return driver
 
 
 @pytest.fixture(scope='class')
 def driver_init(request):
     driver = Chrome()
-    driver = driver.load_driver(headless=False)
+    driver = driver.load_driver(headless=True)
     request.cls.driver = driver
     yield
     driver.close()
@@ -47,7 +49,7 @@ def valid_logins():
 
 @pytest.mark.usefixtures('driver_init')
 class TestLogin:
-    page_url = 'http://localhost:5000'
+    page_url = 'http://192.168.0.227:5000'
 
     def test_pages(self):
         assert requests.get(f'{self.page_url}/login').status_code == 200
