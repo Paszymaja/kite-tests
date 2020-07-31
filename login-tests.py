@@ -1,8 +1,9 @@
-import pytest
-import requests
-import time
 import json
 import random
+import time
+
+import pytest
+import requests
 from selenium import webdriver
 
 
@@ -46,7 +47,7 @@ def valid_logins():
 
 @pytest.mark.usefixtures('driver_init')
 class TestLogin:
-    page_url = 'https://admiring-wescoff-0a164f.netlify.app'
+    page_url = 'http://localhost:5000'
 
     def test_pages(self):
         assert requests.get(f'{self.page_url}/login').status_code == 200
@@ -92,12 +93,12 @@ class TestLogin:
         register_button.click()
         time.sleep(2)
 
-        assert f'{self.page_url}/login' in self.driver.current_url
+        assert f'{self.page_url}' in self.driver.current_url
 
     def test_login_username(self):
         self.driver.get(f'{self.page_url}/login/form')
 
-        name = self.driver.find_element_by_xpath(r'//input[@placeholder="email/username"]')
+        name = self.driver.find_element_by_xpath(r'//input[@placeholder="e-mail/Nazwa użytkownika"]')
         password = self.driver.find_element_by_xpath(r'//input[@placeholder="hasło"]')
         login_button = self.driver.find_element_by_xpath(r'//*[@title="Zaloguj"]')
 
@@ -111,7 +112,7 @@ class TestLogin:
     def test_login_email(self):
         self.driver.get(f'{self.page_url}/login/form')
 
-        name = self.driver.find_element_by_xpath(r'//input[@placeholder="email/username"]')
+        name = self.driver.find_element_by_xpath(r'//input[@placeholder="e-mail/Nazwa użytkownika"]')
         password = self.driver.find_element_by_xpath(r'//input[@placeholder="hasło"]')
         login_button = self.driver.find_element_by_xpath(r'//*[@title="Zaloguj"]')
 
@@ -120,4 +121,4 @@ class TestLogin:
         login_button.click()
         time.sleep(2)
 
-        assert f'{self.page_url}/login' in self.driver.current_url
+        assert f'{self.page_url}' in self.driver.current_url
