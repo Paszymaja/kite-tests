@@ -68,13 +68,13 @@ class TestLogin:
 
     def test_move_arrow_register(self):
         self.driver.get(f'{self.page_url}/register')
-        link = self.driver.find_element_by_partial_link_text('/login')
+        link = self.driver.find_element_by_xpath('//a[@href="/login"]')
         link.click()
         assert f'{self.page_url}/login' in self.driver.current_url
 
     def test_move_arrow_login(self):
         self.driver.get(f'{self.page_url}/login/form')
-        link = self.driver.find_element_by_partial_link_text('/login')
+        link = self.driver.find_element_by_xpath('//a[@href="/login"]')
         link.click()
         assert f'{self.page_url}/login' in self.driver.current_url
 
@@ -107,7 +107,7 @@ class TestLogin:
         login_button.click()
         time.sleep(2)
 
-        assert f'{self.page_url}/login' in self.driver.current_url
+        assert f'{self.page_url}' in self.driver.current_url
 
     def test_login_email(self):
         self.driver.get(f'{self.page_url}/login/form')
