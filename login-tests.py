@@ -33,7 +33,7 @@ class DockerChrome:
 
 @pytest.fixture(scope='class')
 def driver_init(request):
-    driver = Chrome()
+    driver = DockerChrome()
     driver = driver.load_driver(headless=True)
     request.cls.driver = driver
     yield
