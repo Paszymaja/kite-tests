@@ -1,5 +1,6 @@
 import json
 import random
+import sys
 import time
 
 import pytest
@@ -33,8 +34,12 @@ class DockerChrome:
 
 @pytest.fixture(scope='class')
 def driver_init(request):
-    driver = DockerChrome()
-    driver = driver.load_driver(headless=True)
+    if sys.platform == 'linux' or sys.platform == 'linux2':
+        driver = DockerChrome()
+    else:
+        driver = Chrome()
+
+    driver = driver.load_driver()
     request.cls.driver = driver
     yield
     driver.close()
