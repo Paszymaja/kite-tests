@@ -55,6 +55,7 @@ def valid_logins():
 @pytest.mark.usefixtures('driver_init')
 class TestLogin:
     page_url = 'http://192.168.0.227:5000'
+    valid_login = valid_logins()
 
     def test_pages(self):
         assert requests.get(f'{self.page_url}/login').status_code == 200
@@ -93,14 +94,14 @@ class TestLogin:
         password = self.driver.find_element_by_xpath(r'//input[@placeholder="przynajmniej 8 znaków"]')
         check_box = self.driver.find_element_by_xpath(r'//input[@type="checkbox"]')
         register_button = self.driver.find_element_by_xpath(r'//*[@title="Stwórz konto"]')
-        name.send_keys(valid_logins()[0])
-        email.send_keys(valid_logins()[1])
-        password.send_keys(valid_logins()[2])
+        name.send_keys(self.valid_login[0])
+        email.send_keys(self.valid_login[1])
+        password.send_keys(self.valid_login[2])
         check_box.click()
         register_button.click()
         time.sleep(2)
 
-        assert f'{self.page_url}' in self.driver.current_url
+        assert f'{self.page_url}/login' in self.driver.current_url
 
     def test_login_username(self):
         self.driver.get(f'{self.page_url}/login/form')
@@ -109,12 +110,12 @@ class TestLogin:
         password = self.driver.find_element_by_xpath(r'//input[@placeholder="hasło"]')
         login_button = self.driver.find_element_by_xpath(r'//*[@title="Zaloguj"]')
 
-        name.send_keys(valid_logins()[0])
-        password.send_keys(valid_logins()[2])
+        name.send_keys(self.valid_login[0])
+        password.send_keys(self.valid_login[2])
         login_button.click()
         time.sleep(2)
 
-        assert f'{self.page_url}' in self.driver.current_url
+        assert self.page_url in self.driver.current_url
 
     def test_login_email(self):
         self.driver.get(f'{self.page_url}/login/form')
@@ -123,8 +124,8 @@ class TestLogin:
         password = self.driver.find_element_by_xpath(r'//input[@placeholder="hasło"]')
         login_button = self.driver.find_element_by_xpath(r'//*[@title="Zaloguj"]')
 
-        name.send_keys(valid_logins()[1])
-        password.send_keys(valid_logins()[2])
+        name.send_keys(self.valid_login[1])
+        password.send_keys(self.valid_login[2])
         login_button.click()
         time.sleep(2)
 
