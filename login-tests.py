@@ -47,9 +47,9 @@ def driver_init(request):
 
 def valid_logins():
     login_data = json.load(open('data/login_data.json', 'r', encoding="utf8"))
-    return (login_data['name'][random.randint(0, len(login_data['name']) - 1)],
-            login_data['email'][random.randint(0, len(login_data['email']) - 1)],
-            login_data['password'][random.randint(0, len(login_data['password']) - 1)])
+    return (random.choice(login_data['name']),
+            random.choice(login_data['email']),
+            random.choice(login_data['password']))
 
 
 @pytest.mark.usefixtures('driver_init')
