@@ -99,7 +99,7 @@ class TestLogin:
         password.send_keys(self.valid_login[2])
         check_box.click()
         register_button.click()
-        time.sleep(2)
+        time.sleep(3)
 
         assert f'{self.page_url}/login' in self.driver.current_url
 
@@ -113,7 +113,7 @@ class TestLogin:
         name.send_keys(self.valid_login[0])
         password.send_keys(self.valid_login[2])
         login_button.click()
-        time.sleep(2)
+        time.sleep(3)
 
         assert self.page_url in self.driver.current_url
 
@@ -127,6 +127,6 @@ class TestLogin:
         name.send_keys(self.valid_login[1])
         password.send_keys(self.valid_login[2])
         login_button.click()
-        time.sleep(2)
+        time.sleep(3)
 
         assert f'{self.page_url}' in self.driver.current_url
