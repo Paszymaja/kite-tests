@@ -9,6 +9,7 @@ from selenium import webdriver
 
 
 class Chrome:
+    """Class with single function returning windows chromedriver"""
     @staticmethod
     def load_driver(headless=False):
         chrome_options = webdriver.ChromeOptions()
@@ -20,6 +21,7 @@ class Chrome:
 
 
 class DockerChrome:
+    """Class with single function returning chromedriver for docker image"""
     @staticmethod
     def load_driver(headless=True):
         chrome_options = webdriver.ChromeOptions()
@@ -34,6 +36,7 @@ class DockerChrome:
 
 @pytest.fixture(scope='class')
 def driver_init(request):
+    """Generator witch yields driver and automatically close it"""
     if sys.platform == 'linux' or sys.platform == 'linux2':
         driver = DockerChrome()
     else:
@@ -46,6 +49,7 @@ def driver_init(request):
 
 
 def valid_logins():
+    """Load logins from json file and return it"""
     login_data = json.load(open('data/login_data.json', 'r', encoding="utf8"))
     return (random.choice(login_data['name']),
             random.choice(login_data['email']),
