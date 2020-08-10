@@ -10,6 +10,7 @@ from selenium import webdriver
 
 class Chrome:
     """Class with single function returning windows chromedriver"""
+
     @staticmethod
     def load_driver(headless=False):
         chrome_options = webdriver.ChromeOptions()
@@ -22,6 +23,7 @@ class Chrome:
 
 class DockerChrome:
     """Class with single function returning chromedriver for docker image"""
+
     @staticmethod
     def load_driver(headless=True):
         chrome_options = webdriver.ChromeOptions()
@@ -108,6 +110,7 @@ class TestLogin:
         assert f'{self.page_url}/login' in self.driver.current_url
 
     def test_login_username(self):
+        self.driver.execute_script('window.localStorage.clear();')  # clear login token
         self.driver.get(f'{self.page_url}/login/form')
 
         name = self.driver.find_element_by_xpath(r'//input[@placeholder="e-mail/Nazwa użytkownika"]')
@@ -117,11 +120,12 @@ class TestLogin:
         name.send_keys(self.valid_login[0])
         password.send_keys(self.valid_login[2])
         login_button.click()
-        time.sleep(3)
+        self.driver.implicitly_wait(5)
 
-        assert self.page_url in self.driver.current_url
+        assert self.driver.find_element_by_xpath(r'//*[@id="root"]/nav')  # find navbar
 
     def test_login_email(self):
+        self.driver.execute_script('window.localStorage.clear();')  # clear login token
         self.driver.get(f'{self.page_url}/login/form')
 
         name = self.driver.find_element_by_xpath(r'//input[@placeholder="e-mail/Nazwa użytkownika"]')
@@ -131,6 +135,6 @@ class TestLogin:
         name.send_keys(self.valid_login[1])
         password.send_keys(self.valid_login[2])
         login_button.click()
-        time.sleep(3)
+        self.driver.implicitly_wait(5)
 
-        assert f'{self.page_url}' in self.driver.current_url
+        assert self.driver.find_element_by_xpath(r'//*[@id="root"]/nav')  # find navbar
