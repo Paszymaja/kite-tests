@@ -22,7 +22,7 @@ driver_init = drivers_setup.driver_init
 
 @pytest.mark.usefixtures('driver_init')
 class TestLogin:
-    page_url = 'http://89.25.253.218:30082'
+    page_url = 
     valid_login = valid_logins()
 
     def test_pages(self):
