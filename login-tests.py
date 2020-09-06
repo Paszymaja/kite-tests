@@ -1,4 +1,5 @@
 import json
+import os
 import random
 import time
 
@@ -22,7 +23,7 @@ driver_init = drivers_setup.driver_init
 
 @pytest.mark.usefixtures('driver_init')
 class TestLogin:
-    page_url = 
+    page_url = os.getenv('PAGE_URL')
     valid_login = valid_logins()
 
     def test_pages(self):

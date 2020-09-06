@@ -1,3 +1,5 @@
+import os
+
 import pytest
 
 from scripts import drivers_setup
@@ -8,7 +10,7 @@ driver_init = drivers_setup.driver_init
 
 @pytest.mark.usefixtures('driver_init')
 class TestWebpage:
-    page_url = 'http://89.25.253.218:30082'
+    page_url = os.getenv('PAGE_URL')
 
     def test_login_email(self):
         self.driver.get(f'{self.page_url}/login/form')
